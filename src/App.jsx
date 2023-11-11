@@ -7,11 +7,14 @@ import { Route,
         RouterProvider,
         } from 'react-router-dom'
 
+
+
 import { Quiz } from './assets/Componentes/Quiz'
 
 import { Home }from './assets/Componentes/Home'
 
 import { Categories, CategoriesLoader } from './assets/Componentes/Categories'
+import QuestionFetcher from './assets/components/getQuestions'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -20,8 +23,8 @@ const router = createBrowserRouter(
             <Route path='categories' 
                 element={<Categories/>}
                 loader={CategoriesLoader}/>
-            <Route path='categories/:id' element={<Quiz/>}/>
-            <Route path='stats'/>
+            <Route path='categories/quiz' element={<Quiz/>}/>
+            <Route path='stats' element={<QuestionFetcher/>}/>
         </Route>
     )
 )
