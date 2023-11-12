@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import fetchQuestions from "../services/services";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+    
 
 
 export function Quiz() {
@@ -10,6 +12,11 @@ export function Quiz() {
     const quiz = localStorage.getItem("CurrentQuiz");
 
     const quizLength = JSON.parse(quiz).length;
+    
+    const [answers, setAnswers] = useState([]);
+    const [correctAnswers, setCorrectAnswers] = useState([]);
+
+
 
     function handleQuestion(e, index) {
         e.preventDefault();
@@ -26,10 +33,61 @@ export function Quiz() {
         }
     }
 
-    function handleAnswer(e, answer){
-        e.preventDefault();
-        console.log(answer)
+//    temporizador(0); xd ya no va 
+/*
+    function temporizador(time){
+        let count = 150+time;
+        const timer = setInterval(function(){
+        count--;
+        console.log(count);
+        if (count === 0) {
+            clearInterval(timer);
+            console.log("Time's up!");
+        }
+        }, 1000);
+
     }
+*/
+
+function verifyAnswer(selectedAnswer, correctAnswer) {
+    if(selectedAnswer === correctAnswer){
+        //temporizador(5);
+    }else{
+        //temporizador(-10);
+    }
+    return selectedAnswer === correctAnswer;
+
+  }
+
+
+function handleAnswer(e, selectedAnswer, correctAnswer) {
+    e.preventDefault();
+    const Correct = verifyAnswer(selectedAnswer, correctAnswer);
+
+    localStorage.setItem("correctAnswer", correctAnswers);
+    setCorrectAnswers((prevAnswers)=>[...prevAnswers, correctAnswer]);
+    localStorage.setItem("answers", JSON.stringify(correctAnswers));
+    const correcselectedans = localStorage.getItem("correctAnswer");
+    console.log(correcselectedans);
+
+    localStorage.setItem("selectedAnswer", selectedAnswer);
+    setAnswers((prevAnswers) => [...prevAnswers, selectedAnswer]);
+    localStorage.setItem("answers", JSON.stringify(answers));
+
+    const selectedans = localStorage.getItem("selectedAnswer");
+    console.log(selectedans);
+
+  }
+
+  useEffect(()=>{
+    console.log("Answers Array: ", answers);
+  }, [answers]);
+
+  useEffect(()=>{
+    console.log("Correct Answers Array: ", correctAnswers);
+  }, [correctAnswers]);
+
+  
 
     return(
         <>
@@ -50,6 +108,7 @@ function Questions(props) {
         )
     }
 
+
     return (
         <>
             {props.quiz.map( (data, index) => {
@@ -68,7 +127,7 @@ function Questions(props) {
                 answersBtns = <>
                 <section className=" grid grid-cols-2 place-content-center grid-flow-row auto-rows-fr">
                     {answers.map((ans) => {
-                        return <AnswerButton text={ans} handleAnswer={props.handleAnswer}/>
+                        return <AnswerButton text={ans} handleAnswer={(e) => props.handleAnswer(e,ans,data.correct_answer)}/>
                     })}
                 </section>
                 </>
@@ -88,6 +147,7 @@ function Questions(props) {
         </>
     )
 }
+
 
 function QuestionNavigation(props) {
 
