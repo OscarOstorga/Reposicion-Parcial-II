@@ -15,22 +15,28 @@ export function Quiz() {
     
     const [answers, setAnswers] = useState([]);
     const [correctAnswers, setCorrectAnswers] = useState([]);
+    const [submitted, setSubmitted] = useState(false);
 
 
-
+    function handleNextQuestion(e, index) {
+        e.preventDefault();
+    
+        let newSelectedQuestion = selectedQuestion;
+        if (index === -1 && selectedQuestion > 1) {
+            newSelectedQuestion = selectedQuestion - 1;
+        } else if (index === -2 && selectedQuestion < quizLength) {
+            newSelectedQuestion = selectedQuestion + 1;
+        }
+    
+        setSelectQuestion(newSelectedQuestion);
+    
+        localStorage.setItem("selectedQuestion", newSelectedQuestion);
+    }
+    
     function handleQuestion(e, index) {
         e.preventDefault();
         setSelectQuestion(index);
-    }
-
-    function handleNextQuestion(e, index){
-        e.preventDefault();
-
-        if(index == -1 && selectedQuestion > 1) {
-            setSelectQuestion( selectedQuestion - 1);
-        } else if(index == -2 && selectedQuestion < quizLength) {
-            setSelectQuestion( selectedQuestion + 1);
-        }
+        localStorage.setItem("selectedQuestion", index);
     }
 
 //    temporizador(0); xd ya no va 
@@ -59,25 +65,27 @@ function verifyAnswer(selectedAnswer, correctAnswer) {
 
   }
 
-
-function handleAnswer(e, selectedAnswer, correctAnswer) {
+  function handleAnswer(e, selectedAnswer, correctAnswer) {
     e.preventDefault();
     const Correct = verifyAnswer(selectedAnswer, correctAnswer);
 
+    // Get the index of the currently selected question
+    const questionIndex = selectedQuestion - 1;
+    console.log("Selected Question Index:", questionIndex);
+
     localStorage.setItem("correctAnswer", correctAnswers);
-    setCorrectAnswers((prevAnswers)=>[...prevAnswers, correctAnswer]);
+    setCorrectAnswers((prevAnswers) => [...prevAnswers, correctAnswer]);
     localStorage.setItem("answers", JSON.stringify(correctAnswers));
     const correcselectedans = localStorage.getItem("correctAnswer");
-    console.log(correcselectedans);
+  
 
     localStorage.setItem("selectedAnswer", selectedAnswer);
     setAnswers((prevAnswers) => [...prevAnswers, selectedAnswer]);
     localStorage.setItem("answers", JSON.stringify(answers));
-
     const selectedans = localStorage.getItem("selectedAnswer");
-    console.log(selectedans);
 
-  }
+}
+
 
   useEffect(()=>{
     console.log("Answers Array: ", answers);
@@ -87,14 +95,36 @@ function handleAnswer(e, selectedAnswer, correctAnswer) {
     console.log("Correct Answers Array: ", correctAnswers);
   }, [correctAnswers]);
 
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitted(true);
+    const allData = answers.map((selectedAnswer, index) => ({
+        selectedAnswer,
+        correctAnswer: correctAnswers[index],
+        isCorrect: selectedAnswer === correctAnswers[index],
+        questionIndex: index,
+    }));
+    // Save the combined data to local storage
+    localStorage.setItem("submittedData", JSON.stringify(allData));
+    console.log("All Submitted Data:", allData);
+}
+
+    const answeredQuestions = answers.length;
+    const remainingQuestions = quizLength - answeredQuestions;
   
 
     return(
         <>
-            <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} 
-                handleNextQuestion={handleNextQuestion}/>
-            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}
-                handleAnswer={handleAnswer}/>
+            <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} handleNextQuestion={handleNextQuestion} />
+            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion} handleAnswer={handleAnswer} />
+            {submitted ? (
+                <p>SUBMIT </p>
+            ) : (
+                <button className="bg-slate-500 rounded-xl mx-2 my-4 p-5" onClick={handleSubmit}>
+                    Submit
+                </button>
+            )}
         </>
     )
 }
