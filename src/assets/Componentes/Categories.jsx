@@ -6,6 +6,8 @@ import fetchQuestions from "../services/services";
 export function Categories() {
   const navigate = useNavigate();
 
+  const categories = useLoaderData();
+
   function handleClick(e, c) {
     e.preventDefault();
     console.log(c.category);
@@ -16,25 +18,29 @@ export function Categories() {
     });
   }
 
-  const categories = useLoaderData();
+  
 
   return (
     <>
+    <div className="grid gap-4 grid-cols-3 grid-rows-8 justify-center align-center auto-rows-min">
       {categories.map((cat) => {
+        
         const category = cat.id.toString();
+        
         return (
           <>
-            <div className="grid gap-4 grid-cols-3 grid-rows-8 justify-center align-center" key={category}>
               <button
+                key={cat.id.toString()}
                 className=" text-white bg-slate-500 m-3 p-2 mb-3 rounded-md"
                 onClick={(e) => handleClick(e, { category })}
               >
                 {cat.name}
               </button>
-            </div>
           </>
-        );
-      })}
+        )
+      }
+      )}
+      </div>
     </>
   );
 }
