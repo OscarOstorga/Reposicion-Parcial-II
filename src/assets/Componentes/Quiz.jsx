@@ -59,15 +59,16 @@ function Questions(props) {
                 let answersBtns = "Nothing to see here";
 
                 if(data.type == "multiple") {
-                    answers = [... data.incorrect_answers[1], ...data.incorrect_answers[2]];
+                    answers.push(data.incorrect_answers[1]);
+                    answers.push(data.incorrect_answers[2]);
                 } 
 
                 answers = ShuffleArray(answers);
 
                 answersBtns = <>
                 <section className=" grid grid-cols-2 place-content-center grid-flow-row auto-rows-fr">
-                    {answers.map((ans, index) => {
-                        return <AnswerButton text={ans} handleAnswer={props.handleAnswer} key={index}/>
+                    {answers.map((ans) => {
+                        return <AnswerButton text={ans} handleAnswer={props.handleAnswer}/>
                     })}
                 </section>
                 </>

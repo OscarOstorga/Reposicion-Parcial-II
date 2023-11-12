@@ -25,7 +25,7 @@ export function Categories() {
             const category = cat.id.toString();
             return (
                 <>
-                <div className="flex flex-row">
+                <div className="flex flex-row" key={category}>
                 <button className=" bg-slate-500 m-3 p-2 mb-3" onClick={(e) =>handleClick(e, {category})}>{cat.name}</button>
                 </div>
                 </>
