@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export function Quiz() {
 
-    const [selectedQuestion, setSelectQuestion] = useState(2);
+    const [selectedQuestion, setSelectQuestion] = useState(1);
 
     const quiz = localStorage.getItem("CurrentQuiz");
 
