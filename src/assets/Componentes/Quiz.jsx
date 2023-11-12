@@ -5,18 +5,14 @@ import { useState } from "react";
 
 export function Quiz() {
 
-    const [selectedQuestion, setSelectQuestion] = useState(1);
+    const [selectedQuestion, setSelectQuestion] = useState(2);
 
     const quiz = localStorage.getItem("CurrentQuiz");
-
-    console.log(quiz);
 
     const quizLength = JSON.parse(quiz).length;
 
     function handleQuestion(e, index) {
         e.preventDefault();
-        console.log(index);
-
         setSelectQuestion(index);
     }
 
@@ -31,46 +27,59 @@ export function Quiz() {
     }
 
     function handleAnswer(e, answer){
-
+        e.preventDefault();
+        console.log(answer)
     }
 
     return(
         <>
             <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} 
                 handleNextQuestion={handleNextQuestion}/>
-            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}/>
+            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}
+                handleAnswer={handleAnswer}/>
         </>
     )
 }
 
 function Questions(props) {
-    
-    let x = 1;
+
     function AnswerButton(props) {
         return(
-            <>
             <button className=" bg-slate-500 rounded-xl m-2 p-1 px-4" 
-                onClick={(e) => props.handleQuestion(e, text)}>{props.text}</button>
-            </>
+                onClick={(e) => props.handleAnswer(e, props.text)}>{props.text}</button>
         )
     }
 
     return (
         <>
-            {props.quiz.map( (data) => {
-                const isSelected = props.selectQuestion == x ? " " : " hidden";
+            {props.quiz.map( (data, index) => {
+                const isSelected = props.selectQuestion == index + 1 ? " " : " hidden";
 
-                let answers;
+                let answers = [data.correct_answer, data.incorrect_answers[0]];
+                let answersBtns = "Nothing to see here";
 
+                if(data.type == "multiple") {
+                    answers = [... data.incorrect_answers[1], ...data.incorrect_answers[2]];
+                } 
+
+                answers = ShuffleArray(answers);
+
+                answersBtns = <>
+                <section className=" grid grid-cols-2 place-content-center grid-flow-row auto-rows-fr">
+                    {answers.map((ans, index) => {
+                        return <AnswerButton text={ans} handleAnswer={props.handleAnswer} key={index}/>
+                    })}
+                </section>
+                </>
 
                 return(
                     <>
-                    <section className={isSelected} key={x}>
-                        <div> {x++}. {removeCharacters(data.question)}</div>
+                    <section className={isSelected} key={index + 1}>
+                        <div> {index + 1}. {removeCharacters(data.question)}</div>
                         <div> Category: {data.category} --|-- Difficulty: {data.difficulty}</div>  
                     
                     <br />
-
+                        {answersBtns}
                     </section> 
                     </>
                 )
@@ -106,3 +115,11 @@ function QuestionNavigation(props) {
 
 function removeCharacters(question) {
     return question.replace(/(&quot;)/g, "\"").replace(/(&rsquo;)/g, "\"").replace(/(&#039;)/g, "'").replace(/(&amp;)/g, "\"");};
+
+function ShuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) { 
+        const j = Math.floor(Math.random() * (i + 1)); 
+        [array[i], array[j]] = [array[j], array[i]]; 
+      } 
+    return array; 
+}
