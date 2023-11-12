@@ -13,6 +13,8 @@ export function Categories() {
 
         fetchQuestions(c.category).then( (data) => {
             localStorage.setItem("CurrentQuiz", JSON.stringify(data))
+            localStorage.setItem("Timer", "150");
+            localStorage.setItem("AnsOrder", "[]");
             navigate("/categories/quiz");
         })
     }
