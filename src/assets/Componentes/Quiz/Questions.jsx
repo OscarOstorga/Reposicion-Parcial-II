@@ -1,9 +1,12 @@
+import { data } from "autoprefixer";
 import { useEffect, useState, Component } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 export function Questions(props) {
 
     const questionIndex = props.selectQuestion - 1;
+    
 
     const [reRender, setReRender] = useState(true);
 
@@ -11,7 +14,7 @@ export function Questions(props) {
 
         const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
 
-        const answer = QuizSubmission[props.ind].answer; 
+        const answer = QuizSubmission[props.ind].quiz.answer; 
         const isCorrect = QuizSubmission[props.ind].isTrue;
 
         if(answer == " ") {
@@ -43,14 +46,15 @@ export function Questions(props) {
 
         const correct = verifyAnswer(selectedAnswer, correctAnswer);
         const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
+
     
         // Get the index of the currently selected question
         const questionIndex = props.selectQuestion - 1;
 
-        QuizSubmission[questionIndex].answer = selectedAnswer;
-        QuizSubmission[questionIndex].isTrue = correct;
+        QuizSubmission[questionIndex].quiz.answer = selectedAnswer;
+        QuizSubmission[questionIndex].quiz.isTrue = correct;
 
-        localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission));
+        localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission)); 
         setReRender(!reRender);
         
     
@@ -137,7 +141,7 @@ export function QuestionNavigation(props) {
         let color = "";
         let border = "";
 
-        if(QuizSubmission[i - 1].answer != " ") {
+        if(QuizSubmission[i - 1].quiz.answer != " ") {
             color = "bg-[#bfdbfe]";
             console.log(color);
         }
@@ -167,8 +171,13 @@ export function QuestionNavigation(props) {
     )
 }
 
-export function removeCharacters(question) {
-    return question.replace(/(&quot;)/g, "\"").replace(/(&rsquo;)/g, "\"").replace(/(&#039;)/g, "'").replace(/(&amp;)/g, "\"");};
+export function removeCharacters(str) {
+
+    let txt = new DOMParser().parseFromString(str, "text/html");
+
+    return txt.documentElement.textContent;
+
+};
 
 function ShuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) { 

@@ -1,10 +1,14 @@
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import fetchQuestions from "../../services/services";
 import { useEffect, useState } from "react";
 import Timer from "./Timer";
 import { QuestionNavigation, Questions } from "./Questions";
 
+
+
 export function Quiz() {
+
+    const navigate = useNavigate();
 
     const [selectedQuestion, setSelectQuestion] = useState(1);
     const [submitted, setSubmitted] = useState(false);
@@ -12,9 +16,7 @@ export function Quiz() {
 
     const quiz = localStorage.getItem("CurrentQuiz");
     const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
-
-    console.log(QuizSubmission);
-
+    
     const quizLength = JSON.parse(quiz).length;
     const questionsAnswered = getQuestionsAnswered(QuizSubmission);
     
@@ -58,6 +60,7 @@ export function Quiz() {
     submissions.push(newSubmission);
 
     localStorage.setItem("Submissions", JSON.stringify(submissions));
+    navigate("/");
 
     console.log(submissions);
 }
@@ -84,10 +87,8 @@ export function Quiz() {
 function getQuestionsAnswered(data) {
     let x = 0;
 
-    console.log(data);
-
     data.forEach((value) => {
-        if(value.answer != " ") {
+        if(value.quiz.answer != " ") {
             x = x + 1;
         }
     })

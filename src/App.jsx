@@ -15,16 +15,19 @@ import { Home }from './assets/Componentes/Home'
 
 import { Categories, CategoriesLoader } from './assets/Componentes/Categories'
 import { View } from './assets/Componentes/Stats/View'
+import { Attempts } from './assets/Componentes/Stats/Attempts'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
+
         <Route path='/'>
             <Route index element={<Home/>}/>
             <Route path='categories' 
                 element={<Categories/>}
                 loader={CategoriesLoader}/>
             <Route path='categories/quiz' element={<Quiz/>}/>
-            <Route path='stats' element={<View/>}/>
+            <Route path='attempts' element={<Attempts/>}/>
+            <Route path='attempts/:id' element={<View/>}/>
         </Route>
     )
 )

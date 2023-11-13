@@ -6,7 +6,7 @@ import { ResetLocalStorage } from "./Home";
 
 export function Categories() {
   const navigate = useNavigate();
-  const colores = ["bg-[#0369a1]","bg-[#6d28d9]","bg-[#c2410c]"," bg-[#be123c]"]
+  const colores = ["bg-[#0369a1]", "bg-[#6d28d9]","bg-[#c2410c]"," bg-[#be123c]"]
 
   const categories = useLoaderData();
 
@@ -17,9 +17,15 @@ export function Categories() {
         fetchQuestions(c.category).then((data) => {
 
             const cate = data[0].category;
+
+            
+            //Get date
+            const date = new Date();
+            const dateString = date.toString().slice(0, 16);  
+
             const temp = data.map((question) => {
-              return({category: cate, difficulty: question.difficulty, question: question.question,
-                  answer: " ", isTrue: false})
+              return({quiz: {category: cate, difficulty: question.difficulty, question: question.question,
+                  answer: " ", isTrue: false}, date: dateString})
             })
 
             localStorage.setItem("CurrentQuiz", JSON.stringify(data))
@@ -37,7 +43,7 @@ export function Categories() {
       {categories.map((cat, index) => {
         
         const category = cat.id.toString();
-        const colorClass = colores[index % colores.length];
+        const colorClass = colores[index % 4];
         
         return (
           <>
