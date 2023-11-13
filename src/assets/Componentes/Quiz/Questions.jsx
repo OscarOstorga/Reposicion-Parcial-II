@@ -3,11 +3,39 @@ import { useEffect, useState } from "react";
 
 export function Questions(props) {
 
+    const questionIndex = props.selectQuestion - 1;
+
+    const [reRender, setReRender] = useState(true);
+
     function AnswerButton(props) {
-        return(
-            <button className="bg-white rounded-md text-left m-2 p-1 px-4 hover:bg-slate-400 hover:text-white"
-                onClick={(e) => props.handleAnswer(e, props.text)}>{props.text}</button>
-        )
+
+        const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
+
+        const answer = QuizSubmission[props.ind].answer; 
+        const isCorrect = QuizSubmission[props.ind].isTrue;
+
+        if(answer == " ") {
+
+            return(
+                <button className="bg-white rounded-md text-left m-2 p-1 px-4 hover:bg-slate-400 hover:text-white"
+                    onClick={(e) => props.handleAnswer(e, props.text)}>{props.text}</button>
+            )
+
+        } else {
+
+        let color = "bg-white";
+
+        if(props.text == answer) {
+            color = isCorrect ? "bg-[#8B9A46]" : "bg-[#541212]";
+        }
+
+            return(
+                <button className={`${color} rounded-md text-left m-2 p-1 px-4 `}
+                    onClick={(e) => props.handleAnswer(e, props.text)} disabled={true}>{props.text}</button>
+            )
+        }
+
+
     }
 
     function handleAnswer(e, selectedAnswer, correctAnswer) {
@@ -23,6 +51,8 @@ export function Questions(props) {
         QuizSubmission[questionIndex].isTrue = correct;
 
         localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission));
+
+        setReRender(!reRender);
     
     }
 
@@ -37,7 +67,7 @@ export function Questions(props) {
                 const answersBtns = <>
                 <section className=" grid grid-cols-2 place-content-center grid-flow-row auto-rows-fr">
                     {answers.map((ans) => {
-                        return <AnswerButton text={ans} handleAnswer={(e) => handleAnswer(e,ans,data.correct_answer)}/>
+                        return <AnswerButton text={ans} handleAnswer={(e) => handleAnswer(e,ans,data.correct_answer)} ind={index}/>
                     })}
                 </section>
                 </>
@@ -91,10 +121,11 @@ export function QuestionNavigation(props) {
     const rows = [];
      
     for(let i = 1; i <= props.length; i++) {
+        const displayNum = i > 9 ? "" + i : "0" + i;
         rows.push(
-            <button className="rounded-xl mx-2 my-4 p-5" 
+            <button className=" text-xl rounded-xl mx-2 my-4 py-5 px-2" 
                 onClick={(e) => props.handleQuestion(e, i)}
-                key={i}>{i}</button>
+                key={i}>{`Q${displayNum}`}</button>
         )
     }
 
