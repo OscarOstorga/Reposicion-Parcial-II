@@ -7,14 +7,14 @@ import { QuestionNavigation, Questions } from "./Questions";
 export function Quiz() {
 
     const [selectedQuestion, setSelectQuestion] = useState(1);
+    const [reRender, forceReRender] = useState("ji");
+    const [submitted, setSubmitted] = useState(false);
 
     const quiz = localStorage.getItem("CurrentQuiz");
 
     const quizLength = JSON.parse(quiz).length;
     
-    const [answers, setAnswers] = useState([]);
-    const [correctAnswers, setCorrectAnswers] = useState([]);
-    const [submitted, setSubmitted] = useState(false);
+
 
 
     function handleNextQuestion(e, index) {
@@ -61,8 +61,10 @@ export function Quiz() {
     return(
         <>
             <Timer/>
-            <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} handleNextQuestion={handleNextQuestion} />
-            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}/>
+            <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} 
+                handleNextQuestion={handleNextQuestion} selectQuestion={selectedQuestion}/>
+            <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}
+                setSelectQuestion={setSelectQuestion}/>
             {submitted ? (
                 <p className="bg-slate-500 rounded-xl mx-2 my-4 p-5">SUBMIT</p>
             ) : (

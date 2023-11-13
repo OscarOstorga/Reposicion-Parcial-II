@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Component } from "react";
 
 
 export function Questions(props) {
@@ -26,7 +26,7 @@ export function Questions(props) {
         let color = "bg-white";
 
         if(props.text == answer) {
-            color = isCorrect ? "bg-[#8B9A46]" : "bg-[#541212]";
+            color = isCorrect ? "bg-[#8B9A46]" : "bg-[#9c174c]";
         }
 
             return(
@@ -119,15 +119,32 @@ function GenerateAnswerBtnsOrder(data, index) {
 export function QuestionNavigation(props) {
 
     const rows = [];
+   
+    const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
+
      
     for(let i = 1; i <= props.length; i++) {
         const displayNum = i > 9 ? "" + i : "0" + i;
+
+        let color = "";
+        let border = "";
+
+        if(QuizSubmission[i - 1].answer != " ") {
+            color = "bg-[#bfdbfe]";
+            console.log(color);
+        }
+
+        if(props.selectQuestion == i) {
+            border = "border border-[#284ab4]";  
+        }
+
         rows.push(
-            <button className=" text-xl rounded-xl mx-2 my-4 py-5 px-2" 
+            <button className={` ${color} ${border} text-xl rounded-xl mx-2 my-4 py-2 px-2`}
                 onClick={(e) => props.handleQuestion(e, i)}
                 key={i}>{`Q${displayNum}`}</button>
         )
     }
+
 
     return(
         <>
