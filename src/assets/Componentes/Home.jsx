@@ -3,8 +3,7 @@ import { NavLink } from "react-router-dom";
 export function Home() {
 
     ResetLocalStorage();    
-    
-    localStorage.clear();
+
 
     return (
         <>

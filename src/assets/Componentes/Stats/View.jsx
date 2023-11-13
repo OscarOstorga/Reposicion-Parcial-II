@@ -35,10 +35,10 @@ export function View() {
         </div>
         <div className="flex-grow">
           {partida ? (
-            <ul className="flex flex-col">
+            <ul className="flex flex-col justify-around">
               {partida.map((dato, index) => (
-                <div key={index} className="my-2 p-2 overflow-hidden flex">
-                  <li className="flex items-center">
+                <div key={index} className="my-2 p-2 overflow-hidden flex ">
+                  <li className="flex items-center ">
                     {dato.quiz.answer == " " ? (
                         <img
                         className="w-5 h-5"
