@@ -2,6 +2,7 @@ import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 import fetchQuestions from "../services/services";
+import { ResetLocalStorage } from "./Home";
 
 export function Categories() {
 
@@ -12,9 +13,9 @@ export function Categories() {
         console.log(c.category);
 
         fetchQuestions(c.category).then( (data) => {
+            ResetLocalStorage();
             localStorage.setItem("CurrentQuiz", JSON.stringify(data))
-            localStorage.setItem("Timer", "150");
-            localStorage.setItem("AnsOrder", "[]");
+
             navigate("/categories/quiz");
         })
     }
@@ -40,6 +41,5 @@ export function Categories() {
 
 export async function CategoriesLoader() {
    const res = await axios.get("https://opentdb.com/api_category.php");
-   console.log("fetched")
    return res.data.trivia_categories;
 }
