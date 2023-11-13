@@ -13,6 +13,8 @@ export function Quiz() {
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [submitted, setSubmitted] = useState(false);
 
+  const [data, setData] = useState([]);
+
   function handleNextQuestion(e, index) {
     e.preventDefault();
 
@@ -59,7 +61,14 @@ export function Quiz() {
     return selectedAnswer === correctAnswer;
   }
 
-  function handleAnswer(e, selectedAnswer, correctAnswer) {
+  function handleAnswer(
+    e,
+    selectedAnswer,
+    correctAnswer,
+    category,
+    difficulty,
+    question
+  ) {
     e.preventDefault();
     const Correct = verifyAnswer(selectedAnswer, correctAnswer);
 
@@ -76,6 +85,14 @@ export function Quiz() {
     setAnswers((prevAnswers) => [...prevAnswers, selectedAnswer]);
     localStorage.setItem("answers", JSON.stringify(answers));
     const selectedans = localStorage.getItem("selectedAnswer");
+
+    const questionInfo = {
+      category,
+      difficulty,
+      question: removeCharacters(question),
+    };
+    const updatedAnswers = [...answers, { selectedAnswer, ...questionInfo }];
+    setAnswers(updatedAnswers);
   }
 
   useEffect(() => {
@@ -89,11 +106,18 @@ export function Quiz() {
   function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
-    const allData = answers.map((selectedAnswer, index) => ({
+    /* const allData = answers.map((selectedAnswer, index) => ({
       selectedAnswer,
       correctAnswer: correctAnswers[index],
       isCorrect: selectedAnswer === correctAnswers[index],
       questionIndex: index,
+    })); */
+    const allData = answers.map((answer, index) => ({
+      selectedAnswer: answer.selectedAnswer,
+      correctAnswer: correctAnswers[index],
+      isCorrect: answer.selectedAnswer === correctAnswers[index],
+      questionIndex: index,
+      ...answer,
     }));
     // Save the combined data to local storage
     localStorage.setItem("submittedData", JSON.stringify(allData));
@@ -116,7 +140,7 @@ export function Quiz() {
         handleAnswer={handleAnswer}
       />
       {submitted ? (
-        <p className="bg-slate-500 rounded-xl mx-2 my-4 p-5" >Submit </p>
+        <p className="bg-slate-500 rounded-xl mx-2 my-4 p-5">Submit </p>
       ) : (
         <button
           className="bg-slate-500 rounded-xl mx-2 my-4 p-5"
@@ -133,7 +157,7 @@ function Questions(props) {
   function AnswerButton(props) {
     return (
       <button
-      className="bg-white rounded-md text-left m-2 p-1 px-4 hover:bg-[#9d174d] hover:text-white"
+        className="bg-white rounded-md text-left m-2 p-1 px-4 hover:bg-[#9d174d] hover:text-white"
         onClick={(e) => props.handleAnswer(e, props.text)}
       >
         {props.text}
@@ -164,7 +188,14 @@ function Questions(props) {
                   <AnswerButton
                     text={ans}
                     handleAnswer={(e) =>
-                      props.handleAnswer(e, ans, data.correct_answer)
+                      props.handleAnswer(
+                        e,
+                        ans,
+                        data.correct_answer,
+                        data.category,
+                        data.difficulty,
+                        data.question
+                      )
                     }
                   />
                 );
@@ -175,7 +206,9 @@ function Questions(props) {
 
         return (
           <>
-            <section className={`mx-auto max-w-4xl p-4 m-4 bg-white rounded-md ${isSelected}`}>
+            <section
+              className={`mx-auto max-w-4xl p-4 m-4 bg-white rounded-md ${isSelected}`}
+            >
               <div className="p-2 text-xl">
                 {" "}
                 {index + 1}. {removeCharacters(data.question)}
@@ -217,14 +250,14 @@ function QuestionNavigation(props) {
           className="rounded-xl mx-2 my-4 p-5"
           onClick={(e) => props.handleNextQuestion(e, -1)}
         >
-          &lt;
+          -
         </button>
         {rows}
         <button
           className="rounded-xl mx-2 my-4 p-5"
           onClick={(e) => props.handleNextQuestion(e, -2)}
         >
-          &gt;
+          +
         </button>
       </div>
     </>

@@ -9,12 +9,14 @@ import { Route,
 
 
 
-import { Quiz } from './assets/Componentes/Quiz/Quiz'
-
+//import { Quiz } from './assets/Componentes/Quiz/Quiz'
+import { Quiz } from './assets/Componentes/Quiz'
 import { Home }from './assets/Componentes/Home'
 
 import { Categories, CategoriesLoader } from './assets/Componentes/Categories'
 import QuestionFetcher from './assets/components/getQuestions'
+
+import { View } from './assets/Componentes/stats/View'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,7 +26,7 @@ const router = createBrowserRouter(
                 element={<Categories/>}
                 loader={CategoriesLoader}/>
             <Route path='categories/quiz' element={<Quiz/>}/>
-            <Route path='stats' element={<QuestionFetcher/>}/>
+            <Route path='stats' element={<View/>}/>
         </Route>
     )
 )
