@@ -116,7 +116,7 @@ export function Quiz() {
         handleAnswer={handleAnswer}
       />
       {submitted ? (
-        <p>SUBMIT </p>
+        <p className="bg-slate-500 rounded-xl mx-2 my-4 p-5" >Submit </p>
       ) : (
         <button
           className="bg-slate-500 rounded-xl mx-2 my-4 p-5"
