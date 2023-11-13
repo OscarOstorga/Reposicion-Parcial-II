@@ -14,7 +14,7 @@ import { Quiz } from './assets/Componentes/Quiz/Quiz'
 import { Home }from './assets/Componentes/Home'
 
 import { Categories, CategoriesLoader } from './assets/Componentes/Categories'
-import QuestionFetcher from './assets/components/getQuestions'
+import QuestionFetcher from './assets/Componentes/getQuestions'
 
 const router = createBrowserRouter(
     createRoutesFromElements(

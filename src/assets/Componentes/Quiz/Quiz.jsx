@@ -7,12 +7,14 @@ import { QuestionNavigation, Questions } from "./Questions";
 export function Quiz() {
 
     const [selectedQuestion, setSelectQuestion] = useState(1);
-    const [reRender, forceReRender] = useState("ji");
     const [submitted, setSubmitted] = useState(false);
+    const [reRender, GetReRendered] = useState(true);
 
     const quiz = localStorage.getItem("CurrentQuiz");
+    const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
 
     const quizLength = JSON.parse(quiz).length;
+    const questionsAnswered = getQuestionsAnswered(QuizSubmission);
     
 
 
@@ -66,15 +68,29 @@ export function Quiz() {
             <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}
                 setSelectQuestion={setSelectQuestion}/>
             {submitted ? (
-                <p className="bg-slate-500 rounded-xl mx-2 my-4 p-5">SUBMIT</p>
+                <p className="flex items-center justify-center mx-auto max-w-xs w-screen text-gray-300 bg-[#9d174d] rounded-xl mx-2 my-4 p-5">SUBMIT</p>
             ) : (
-                <button className="bg-slate-500 rounded-xl mx-2 my-4 p-5" onClick={handleSubmit}>
-                    {`Submit 0/${quizLength}`}
+                <button className="flex items-center justify-center mx-auto max-w-xs w-screen text-gray-300 bg-[#9d174d] rounded-xl mx-2 my-4 p-5" onClick={handleSubmit}>
+                    {`Submit ${questionsAnswered}/${quizLength}`}
                 </button>
             )}
         </>
     )
 }
 
+
+function getQuestionsAnswered(data) {
+    let x = 0;
+
+    console.log(data);
+
+    data.forEach((value) => {
+        if(value.answer != " ") {
+            x = x + 1;
+        }
+    })
+
+    return x;
+}
 
 

@@ -51,8 +51,8 @@ export function Questions(props) {
         QuizSubmission[questionIndex].isTrue = correct;
 
         localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission));
-
         setReRender(!reRender);
+        
     
     }
 
@@ -74,14 +74,22 @@ export function Questions(props) {
 
                 return(
                     <>
-                    <section className={`mx-auto max-w-4xl p-4 m-4 bg-white rounded-md ${isSelected}`}
-                    key={index + 1}>
-                        <div> {index + 1}. {removeCharacters(data.question)}</div>
-                        <div> Category: {data.category} --|-- Difficulty: {data.difficulty}</div>  
-                    
-                    <br />
-                        {answersBtns}
-                    </section> 
+            <section
+              className={`mx-auto max-w-4xl p-6 m-6 bg-white rounded-md ${isSelected}`}
+              key={index + 1}
+            >
+              <div className="p-2 text-xl">
+                {" "}
+                {index + 1}. {removeCharacters(data.question)}
+              </div>
+              <div className="text-sm p-2">
+                {" "}
+                Category: {data.category} | Difficulty: {data.difficulty}
+              </div>
+
+              <br />
+              {answersBtns}
+            </section>
                     </>
                 )
             })}
