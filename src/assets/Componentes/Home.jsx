@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
 
 export function Home() {
+
+    ResetLocalStorage();
+
     return (
         <>
         <nav className="flex flex-col items-center justify-center h-screen">
@@ -9,4 +12,11 @@ export function Home() {
         </nav>
         </>
     );
+}
+
+export function ResetLocalStorage() {
+    localStorage.setItem("CurrentQuiz", "");
+    localStorage.setItem("Timer", "150");
+    localStorage.setItem("AnsOrder", "[]");
+    localStorage.setItem("QuizSubmission", "[]");
 }

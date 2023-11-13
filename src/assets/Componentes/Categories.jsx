@@ -2,6 +2,7 @@ import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 import fetchQuestions from "../services/services";
+import { ResetLocalStorage } from "./Home";
 
 export function Categories() {
   const navigate = useNavigate();
@@ -10,13 +11,21 @@ export function Categories() {
 
   function handleClick(e, c) {
     e.preventDefault();
-    console.log(c.category);
+    ResetLocalStorage();
 
-    fetchQuestions(c.category).then((data) => {
-      localStorage.setItem("CurrentQuiz", JSON.stringify(data));
-      navigate("/categories/quiz");
-    });
-  }
+        fetchQuestions(c.category).then((data) => {
+
+            const cate = data[0].category;
+            const temp = data.map((question) => {
+              return({category: cate, difficulty: question.difficulty, answer: " ", isTrue: false})
+            })
+
+            localStorage.setItem("CurrentQuiz", JSON.stringify(data))
+            localStorage.setItem("QuizSubmission", JSON.stringify(temp));
+
+            navigate("/categories/quiz");
+        })
+    }
 
   
 
@@ -30,7 +39,7 @@ export function Categories() {
         return (
           <>
               <button
-                key={cat.id.toString()}
+                key={cat.id}
                 className=" text-white bg-slate-500 m-3 p-2 mb-3 rounded-md"
                 onClick={(e) => handleClick(e, { category })}
               >
@@ -46,7 +55,6 @@ export function Categories() {
 }
 
 export async function CategoriesLoader() {
-  const res = await axios.get("https://opentdb.com/api_category.php");
-  console.log("fetched");
-  return res.data.trivia_categories;
+   const res = await axios.get("https://opentdb.com/api_category.php");
+   return res.data.trivia_categories;
 }

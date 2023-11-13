@@ -12,8 +12,6 @@ export default async function fetchQuestions(category){
   const data1 = res1.data.results;
   const data2 = res2.data.results;
   const combdata= [ ...data, ...data1, ...data2];
-
-    console.log(combdata);
     return combdata;
 
   }catch(error){
