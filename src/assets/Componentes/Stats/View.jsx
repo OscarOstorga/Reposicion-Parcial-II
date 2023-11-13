@@ -36,7 +36,7 @@ export function View() {
         </div>
         <div className="flex-grow">
           {partida ? (
-            <ul className="flex flex-col">
+            <ul className="flex flex-col justify-around">
               {partida.map((dato, index) => (
                 <div key={index} className="my-2 p-2 flex overflow-hidden ">
                   <li className="flex items-center">
