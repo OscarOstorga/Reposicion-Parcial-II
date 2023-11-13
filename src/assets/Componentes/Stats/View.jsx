@@ -19,7 +19,7 @@ export function View() {
   }, []);
 
   function handleBack (){
-    navigate("/");  
+    navigate("/attempts");  
   }
 
   return (
@@ -27,7 +27,8 @@ export function View() {
       <div className="flex flex-col items-center justify-center mx-auto max-w-4xl p-4 m-4 bg-white rounded-md">
         <div className="flex flex-row m-2">
           <div className="pr-80" onClick={handleBack}>
-            <img src="/src/assets/img/flecha-pequena-izquierda.png" alt="<--"></img>
+            <img src="/src/assets/img/flecha-pequena-izquierda.png" alt="<--" className=" hover:bg-[#e2e8f0] rounded-md">
+            </img>
           </div>
           <div className="pl-80">
             <p className="text-xl">Attempt Summary</p>
@@ -37,7 +38,7 @@ export function View() {
           {partida ? (
             <ul className="flex flex-col">
               {partida.map((dato, index) => (
-                <div key={index} className="my-2 p-2 overflow-hidden flex">
+                <div key={index} className="my-2 p-2 flex overflow-hidden ">
                   <li className="flex items-center">
                     {dato.quiz.answer == " " ? (
                         <img

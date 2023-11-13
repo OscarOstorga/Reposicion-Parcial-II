@@ -15,7 +15,8 @@ export function Questions(props) {
         const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
 
         const answer = QuizSubmission[props.ind].quiz.answer; 
-        const isCorrect = QuizSubmission[props.ind].isTrue;
+
+        const isCorrect = QuizSubmission[props.ind].quiz.isTrue;
 
         if(answer == " ") {
 
@@ -57,7 +58,6 @@ export function Questions(props) {
         localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission)); 
         setReRender(!reRender);
         
-    
     }
 
 
@@ -71,7 +71,7 @@ export function Questions(props) {
                 const answersBtns = <>
                 <section className=" flex flex-col">
                     {answers.map((ans) => {
-                        return <AnswerButton text={ans} handleAnswer={(e) => handleAnswer(e,ans,data.correct_answer)} ind={index}/>
+                        return <AnswerButton text={ans} handleAnswer={(e) => props.handleAnswer(e,ans,data.correct_answer)} ind={index}/>
                     })}
                 </section>
                 </>
@@ -143,7 +143,6 @@ export function QuestionNavigation(props) {
 
         if(QuizSubmission[i - 1].quiz.answer != " ") {
             color = "bg-[#bfdbfe]";
-            console.log(color);
         }
 
         if(props.selectQuestion == i) {
@@ -151,7 +150,7 @@ export function QuestionNavigation(props) {
         }
 
         rows.push(
-            <button className={` ${color} ${border} text-xl rounded-xl mx-2 my-4 py-2 px-2`}
+            <button className={` ${color} ${border} text-xl rounded-xl mx-2 my-4 py-2 px-2 hover:border-y hover:border-[#284ab4]`}
                 onClick={(e) => props.handleQuestion(e, i)}
                 key={i}>{`Q${displayNum}`}</button>
         )
@@ -160,7 +159,7 @@ export function QuestionNavigation(props) {
 
     return(
         <>
-        <div className=" flex flex-row justify-center items-center">
+        <div className=" flex flex-row flex-grow-0 justify-center items-center">
         <button className="rounded-xl mx-2 my-4 p-5"
                 onClick={(e) => props.handleNextQuestion(e, -1)}>&lt;</button>
             {rows}
@@ -187,17 +186,4 @@ function ShuffleArray(array) {
     return array; 
 } 
 
-function verifyAnswer(selectedAnswer, correctAnswer) {
-    if(selectedAnswer === correctAnswer){
-        const newTime = parseInt(localStorage.getItem("Timer")) + 5;
-        console.log(newTime);
-        localStorage.setItem("Timer", newTime);
 
-    }else{
-        const newTime = parseInt(localStorage.getItem("Timer")) - 10;
-        localStorage.setItem("Timer", newTime);
-        console.log(newTime);
-    }
-    return selectedAnswer === correctAnswer;
-
-  }

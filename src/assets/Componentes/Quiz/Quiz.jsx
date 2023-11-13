@@ -11,15 +11,19 @@ export function Quiz() {
     const navigate = useNavigate();
 
     const [selectedQuestion, setSelectQuestion] = useState(1);
+    const [reRender, setReRender] = useState(true);
+    const [ans, setAns] = useState();
     const [submitted, setSubmitted] = useState(false);
-    const [reRender, GetReRendered] = useState(true);
 
     const quiz = localStorage.getItem("CurrentQuiz");
     const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
     
     const quizLength = JSON.parse(quiz).length;
-    const questionsAnswered = getQuestionsAnswered(QuizSubmission);
-    
+    let questionsAnswered = getQuestionsAnswered(QuizSubmission);
+
+    useEffect(() => {
+        questionsAnswered = getQuestionsAnswered(QuizSubmission);;
+    }, [localStorage.getItem("CurrentQuiz")])
 
 
 
@@ -36,6 +40,24 @@ export function Quiz() {
         setSelectQuestion(newSelectedQuestion);
     
         localStorage.setItem("selectedQuestion", newSelectedQuestion);
+    }
+
+    function handleAnswer(e, selectedAnswer, correctAnswer) {
+        e.preventDefault();
+
+        const correct = verifyAnswer(selectedAnswer, correctAnswer);
+        const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
+
+    
+        // Get the index of the currently selected question
+        const questionIndex = selectedQuestion - 1;
+
+        QuizSubmission[questionIndex].quiz.answer = selectedAnswer;
+        QuizSubmission[questionIndex].quiz.isTrue = correct;
+
+        localStorage.setItem("QuizSubmission", JSON.stringify(QuizSubmission)); 
+        setReRender(!reRender);
+        
     }
     
     function handleQuestion(e, index) {
@@ -62,7 +84,6 @@ export function Quiz() {
     localStorage.setItem("Submissions", JSON.stringify(submissions));
     navigate("/");
 
-    console.log(submissions);
 }
 
     return(
@@ -71,7 +92,7 @@ export function Quiz() {
             <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} 
                 handleNextQuestion={handleNextQuestion} selectQuestion={selectedQuestion}/>
             <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}
-                setSelectQuestion={setSelectQuestion}/>
+                setSelectQuestion={setSelectQuestion} handleAnswer={handleAnswer}/>
             {submitted ? (
                 <p className="flex items-center justify-center mx-auto max-w-xs w-screen text-gray-300 bg-[#9d174d] rounded-xl mx-2 my-4 p-5">SUBMIT</p>
             ) : (
@@ -84,7 +105,7 @@ export function Quiz() {
 }
 
 
-function getQuestionsAnswered(data) {
+export function getQuestionsAnswered(data) {
     let x = 0;
 
     data.forEach((value) => {
@@ -95,5 +116,20 @@ function getQuestionsAnswered(data) {
 
     return x;
 }
+
+function verifyAnswer(selectedAnswer, correctAnswer) {
+    if(selectedAnswer === correctAnswer){
+        const newTime = parseInt(localStorage.getItem("Timer")) + 5;
+        console.log(newTime);
+        localStorage.setItem("Timer", newTime);
+
+    }else{
+        const newTime = parseInt(localStorage.getItem("Timer")) - 10;
+        localStorage.setItem("Timer", newTime);
+        console.log(newTime);
+    }
+    return selectedAnswer === correctAnswer;
+
+  }
 
 

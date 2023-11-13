@@ -3,10 +3,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useLoaderData } from "react-router-dom";
 import fetchQuestions from "../services/services";
 import { ResetLocalStorage } from "./Home";
+import { removeCharacters } from "./Quiz/Questions";
 
 export function Categories() {
   const navigate = useNavigate();
-  const colores = ["bg-[#0369a1]", "bg-[#6d28d9]","bg-[#c2410c]"," bg-[#be123c]"]
+  const colores = ["bg-[#0369a1]", "bg-[#6d28d9]", "bg-[#c2410c]", "bg-[#be123c]"]
 
   const categories = useLoaderData();
 
@@ -24,7 +25,7 @@ export function Categories() {
             const dateString = date.toString().slice(0, 16);  
 
             const temp = data.map((question) => {
-              return({quiz: {category: cate, difficulty: question.difficulty, question: question.question,
+              return({quiz: {category: cate, difficulty: question.difficulty, question: removeCharacters(question.question),
                   answer: " ", isTrue: false}, date: dateString})
             })
 
