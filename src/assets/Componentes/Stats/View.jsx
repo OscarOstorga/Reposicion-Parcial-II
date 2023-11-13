@@ -34,12 +34,12 @@ export function View() {
             <p className="text-xl">Attempt Summary</p>
           </div>
         </div>
-        <div className="flex-grow">
+        <div className="flex flex-col">
           {partida ? (
-            <ul className="flex flex-col justify-around">
+            <div className="flex flex-col">
               {partida.map((dato, index) => (
-                <div key={index} className="my-2 p-2 flex overflow-hidden ">
-                  <li className="flex items-center">
+                <div key={index} className="grid grid-cols-3 gap-5 pb-4">
+                  <div className="flex items-center col-span-2 grow-0">
                     {dato.quiz.answer == " " ? (
                         <img
                         className="w-5 h-5"
@@ -59,7 +59,7 @@ export function View() {
                         alt="Incorrect"
                       />
                     ))}
-                    <div className="flex flex-col ml-2">
+                    <div className="flex flex-col ml-2 max-w-md min-w-md">
                       <div>
                         <p className="text-xs">
                           Question: {dato.quiz.category} -{dato.quiz.difficulty}{" "}
@@ -70,14 +70,16 @@ export function View() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col ml-2">
+                  </div>
+                  <div className="flex flex-col ml-2 pr-3 basis-50 grow-0">
+
                       <p className="text-xs">Given Answer:</p>
                       <p className="text-sm"> {dato.quiz.answer}</p>
+
                     </div>
-                  </li>
                 </div>
               ))}
-            </ul>
+            </div>
           ) : (
             <p>No hay registro</p>
           )}
