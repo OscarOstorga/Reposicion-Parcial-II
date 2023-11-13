@@ -18,7 +18,8 @@ export function Categories() {
 
             const cate = data[0].category;
             const temp = data.map((question) => {
-              return({category: cate, difficulty: question.difficulty, answer: " ", isTrue: false})
+              return({category: cate, difficulty: question.difficulty, question: question.question,
+                  answer: " ", isTrue: false})
             })
 
             localStorage.setItem("CurrentQuiz", JSON.stringify(data))

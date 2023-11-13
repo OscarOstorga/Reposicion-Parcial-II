@@ -13,6 +13,8 @@ export function Quiz() {
     const quiz = localStorage.getItem("CurrentQuiz");
     const QuizSubmission = JSON.parse(localStorage.getItem("QuizSubmission"));
 
+    console.log(QuizSubmission);
+
     const quizLength = JSON.parse(quiz).length;
     const questionsAnswered = getQuestionsAnswered(QuizSubmission);
     
