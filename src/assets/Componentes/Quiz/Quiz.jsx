@@ -67,9 +67,9 @@ export function Quiz() {
             <QuestionNavigation length={quizLength} handleQuestion={handleQuestion} handleNextQuestion={handleNextQuestion} />
             <Questions quiz={JSON.parse(quiz)} selectQuestion={selectedQuestion}/>
             {submitted ? (
-                <p>SUBMIT</p>
+                <button className="flex items-center justify-center mx-auto max-w-xs w-screen text-gray-300 bg-[#9d174d] rounded-xl mx-2 my-4 p-5"> Submit </button>
             ) : (
-                <button className="bg-slate-500 rounded-xl mx-2 my-4 p-5" onClick={handleSubmit}>
+                <button className="flex items-center justify-center mx-auto max-w-xs w-screen text-white bg-[#9d174d] rounded-xl mx-2 my-4 p-5" onClick={handleSubmit}>
                     Submit
                 </button>
             )}

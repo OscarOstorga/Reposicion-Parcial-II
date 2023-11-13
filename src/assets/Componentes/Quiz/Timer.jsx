@@ -26,7 +26,7 @@ export default function Timer() {
 
     return(
         <>
-        <div>
+        <div className="flex items-center justify-center text-xl m-6 p-6">
             Time: {timeLeft}
         </div>
         </>
