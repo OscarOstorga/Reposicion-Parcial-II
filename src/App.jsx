@@ -9,7 +9,7 @@ import { Route,
 
 
 
-import { Quiz } from './assets/Componentes/Quiz'
+import { Quiz } from './assets/Componentes/Quiz/Quiz'
 
 import { Home }from './assets/Componentes/Home'
 
