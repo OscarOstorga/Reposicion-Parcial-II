@@ -217,14 +217,14 @@ function QuestionNavigation(props) {
           className="rounded-xl mx-2 my-4 p-5"
           onClick={(e) => props.handleNextQuestion(e, -1)}
         >
-          -
+          &lt;
         </button>
         {rows}
         <button
           className="rounded-xl mx-2 my-4 p-5"
           onClick={(e) => props.handleNextQuestion(e, -2)}
         >
-          +
+          &gt;
         </button>
       </div>
     </>
