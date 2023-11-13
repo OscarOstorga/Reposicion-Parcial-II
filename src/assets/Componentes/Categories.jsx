@@ -6,7 +6,7 @@ import { ResetLocalStorage } from "./Home";
 
 export function Categories() {
   const navigate = useNavigate();
-  const colores = ["bg-[#0369a1]","bg-[#6d28d9] ","bg-[#c2410c]"," bg-[#be123c]"]
+  const colores = ["bg-[#0369a1]","bg-[#6d28d9]","bg-[#c2410c]"," bg-[#be123c]"]
 
   const categories = useLoaderData();
 
