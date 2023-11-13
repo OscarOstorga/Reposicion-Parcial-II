@@ -65,7 +65,7 @@ export function Questions(props) {
                 let answers = GenerateAnswerBtnsOrder(data, index);
 
                 const answersBtns = <>
-                <section className=" grid grid-cols-2 place-content-center grid-flow-row auto-rows-fr">
+                <section className=" flex flex-col">
                     {answers.map((ans) => {
                         return <AnswerButton text={ans} handleAnswer={(e) => handleAnswer(e,ans,data.correct_answer)} ind={index}/>
                     })}
